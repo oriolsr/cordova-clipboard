@@ -2,7 +2,7 @@ var cordova = require('cordova');
 
 /**
  * Clipboard plugin for Cordova
- * 
+ *
  * @constructor
  */
 function Clipboard () {}
@@ -37,6 +37,16 @@ Clipboard.prototype.paste = function (onSuccess, onFail) {
  */
 Clipboard.prototype.clear = function (onSuccess, onFail) {
 	cordova.exec(onSuccess, onFail, "Clipboard", "clear", []);
+};
+
+/**
+ * Clear if the clipboard content has an URL
+ *
+ * @param {Function} onSuccess The function to call in case of success
+ * @param {Function} onFail    The function to call in case of error
+ */
+Clipboard.prototype.hasUrl = function (onSuccess, onFail) {
+	cordova.exec(onSuccess, onFail, "Clipboard", "hasUrl", []);
 };
 
 // Register the plugin

@@ -40,4 +40,18 @@
 	}];
 }
 
+- (void)hasUrl:(CDVInvokedUrlCommand*)command {
+	[self.commandDelegate runInBackground:^{
+        UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+
+        if (pasteboard.hasURLs) {
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:true];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        } else {
+            CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:false];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+        }
+	}];
+}
+
 @end

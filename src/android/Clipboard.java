@@ -17,6 +17,7 @@ public class Clipboard extends CordovaPlugin {
     private static final String actionCopy = "copy";
     private static final String actionPaste = "paste";
     private static final String actionClear = "clear";
+    private static final String actionHasUrl = "hasUrl";
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -40,7 +41,7 @@ public class Clipboard extends CordovaPlugin {
         } else if (action.equals(actionPaste)) {
             try {
                 String text = "";
-                
+
                 ClipData clip = clipboard.getPrimaryClip();
                 if (clip != null) {
                     ClipData.Item item = clip.getItemAt(0);
@@ -58,6 +59,30 @@ public class Clipboard extends CordovaPlugin {
                 clipboard.setPrimaryClip(clip);
 
                 callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK));
+
+                return true;
+            } catch (Exception e) {
+                callbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR, e.toString()));
+            }
+        } else if (action.equals(actionHasUrl)) {
+            try {
+                ClipData clipData = clipboard.getPrimaryClip();
+                boolean hasUrl = false;
+
+                if (clipData != null) {
+                    for (int i = 0; i < clipData.getItemCount(); i++) {
+                        ClipData.Item item = clipData.getItemAt(i);
+                        if (item.getUri() != null && item.getUri().toString().startsWith("http")) {
+                            hasUrl = true;
+                        }
+                    }
+                }
+
+                if (hasUrl) {
+                    callbackContext.success("true");
+                } else {
+                    callbackContext.success("false");
+                }
 
                 return true;
             } catch (Exception e) {
