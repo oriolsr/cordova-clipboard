@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.ClipboardManager;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.util.Patterns;
 
 public class Clipboard extends CordovaPlugin {
 
@@ -72,7 +73,7 @@ public class Clipboard extends CordovaPlugin {
                 if (clipData != null) {
                     for (int i = 0; i < clipData.getItemCount(); i++) {
                         ClipData.Item item = clipData.getItemAt(i);
-                        if (item.getUri() != null && item.getUri().toString().startsWith("http")) {
+                        if (item.getText() != null && Patterns.WEB_URL.matcher(item.getText()).matches() && item.getText().toString().startsWith("http")) {
                             hasUrl = true;
                         }
                     }
